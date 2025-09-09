@@ -23,9 +23,6 @@
 # Get the recovery file path
   vRecoveryFilePath="$vDownloadFolderPath"/chromeos-flex-latest.bin
 
-# Definir fecha de ejecución del script
-  cFechaDelRecovery=$(date +a%Ym%md%d@%T)
-
 # Get the cluster size
   # Comprobar si el paquete sleuthkit está instalado. Si no lo está, instalarlo.
     if [[ $(dpkg-query -s sleuthkit 2>/dev/null | grep installed) == "" ]]; then
@@ -73,20 +70,20 @@
         fi
       for vIndice in "${!aNuevosOffsets[@]}"; do
         vNroConCeros=$(printf "%02d" $((vIndice + 1)))
-        sudo mkdir -p "/ChromeOSRecovery/$cFechaDelRecovery/Particiones/$vNroConCeros"
+        sudo mkdir -p "/ChromeOSRecovery/Particiones/$vNroConCeros"
         vDispositivoLoopLibre=$(sudo losetup -f)
         sudo losetup -f -o "${aNuevosOffsets[vIndice]}" "$vRecoveryFilePath" && \
         echo -e "\n  Partición del offset ${aNuevosOffsets[vIndice]} asignada a $vDispositivoLoopLibre."
-        sudo mount -o ro "$vDispositivoLoopLibre" "/ChromeOSRecovery/$cFechaDelRecovery/Particiones/$vNroConCeros" && \
-        echo -e "\n    $vDispositivoLoopLibre montado en /ChromeOSRecovery/$cFechaDelRecovery/Particiones/$vNroConCeros.\n"
+        sudo mount -o ro "$vDispositivoLoopLibre" "/ChromeOSRecovery/Particiones/$vNroConCeros" && \
+        echo -e "\n    $vDispositivoLoopLibre montado en /ChromeOSRecovery/Particiones/$vNroConCeros.\n"
       done
       echo ""
 
 # Get the EFI Partition folder
   for vIndice in "${!aNuevosOffsets[@]}"; do
     vNroConCeros=$(printf "%02d" $((vIndice + 1)))
-    if [[ -d "/ChromeOSRecovery/$cFechaDelRecovery/Particiones/$vNroConCeros/efi" && -d "/ChromeOSRecovery/$cFechaDelRecovery/Particiones/$vNroConCeros/syslinux" ]]; then
-      vEFIPartitionFolder="/ChromeOSRecovery/$cFechaDelRecovery/Particiones/$vNroConCeros/"
+    if [[ -d "/ChromeOSRecovery/Particiones/$vNroConCeros/efi" && -d "/ChromeOSRecovery/Particiones/$vNroConCeros/syslinux" ]]; then
+      vEFIPartitionFolder="/ChromeOSRecovery/Particiones/$vNroConCeros/"
     fi
   done
   echo ""
@@ -98,8 +95,8 @@
 # Get the root Partition folder
   for vIndice in "${!aNuevosOffsets[@]}"; do
     vNroConCeros=$(printf "%02d" $((vIndice + 1)))
-    if [[ -d "/ChromeOSRecovery/$cFechaDelRecovery/Particiones/$vNroConCeros/home" && -d "/ChromeOSRecovery/$cFechaDelRecovery/Particiones/$vNroConCeros/root" ]]; then
-      vRootPartitionFolder="/ChromeOSRecovery/$cFechaDelRecovery/Particiones/$vNroConCeros/"
+    if [[ -d "/ChromeOSRecovery/Particiones/$vNroConCeros/home" && -d "/ChromeOSRecovery/Particiones/$vNroConCeros/root" ]]; then
+      vRootPartitionFolder="/ChromeOSRecovery/Particiones/$vNroConCeros/"
     fi
   done
   echo ""
@@ -109,4 +106,4 @@
   echo ""
 
 # Delete empty folders
-  #find "/ChromeOSRecovery/$cFechaDelRecovery/Particiones/" -type d -empty -delete
+  #find "/ChromeOSRecovery/Particiones/" -type d -empty -delete
