@@ -9,78 +9,19 @@
 # NiPeGun's script to copy data from ChromeOS Flex recovery file mounted partitions
 #
 # Remote execution (may require sudo privileges):
-#   curl -sL https://raw.githubusercontent.com/nipegun/chromeos-scripts/refs/heads/main/RecoveryFile-Partitions-Mount.sh | bash
+#   curl -sL https://raw.githubusercontent.com/nipegun/chromeos-scripts/refs/heads/main/RecoveryFile-Partitions-Mounted-CopyFiles.sh | bash
 #
 # Remote execution as root (for systems without sudo):
-#   curl -sL https://raw.githubusercontent.com/nipegun/chromeos-scripts/refs/heads/main/RecoveryFile-Partitions-Mount.sh | sed 's-sudo--g' | bash
+#   curl -sL https://raw.githubusercontent.com/nipegun/chromeos-scripts/refs/heads/main/RecoveryFile-Partitions-Mounted-CopyFiles.sh | sed 's-sudo--g' | bash
 #
 # Download and edit the file directly in nano:
-#   curl -sL https://raw.githubusercontent.com/nipegun/chromeos-scripts/refs/heads/main/RecoveryFile-Partitions-Mount.sh | nano -
+#   curl -sL https://raw.githubusercontent.com/nipegun/chromeos-scripts/refs/heads/main/RecoveryFile-Partitions-Mounted-CopyFiles.sh | nano -
 
 # Get the name of the downloads folder
   vDownloadFolderPath=$(xdg-user-dir DOWNLOAD)
 
-# Get the recovery file path
-  vRecoveryFilePath="$vDownloadFolderPath"/chromeos-flex-latest.bin
-
-# Get the cluster size
-  # Comprobar si el paquete sleuthkit está instalado. Si no lo está, instalarlo.
-    if [[ $(dpkg-query -s sleuthkit 2>/dev/null | grep installed) == "" ]]; then
-      echo ""
-      echo -e "${cColorRojo}  El paquete sleuthkit no está instalado. Iniciando su instalación...${cFinColor}"
-      echo ""
-      sudo apt-get -y update
-      sudo apt-get -y install sleuthkit
-      echo ""
-    fi
-  vBytesPerSector=$(mmls "$vRecoveryFilePath" | grep ector | grep - | cut -d'-' -f1 | sed 's- -\n-g' | grep ^[0-9])
-  echo -e "\n" && echo "  Se calcularán offsets finales para tamaño de sector de $vBytesPerSector bytes..." && echo -e "\n"
-    # Crear un array con los offsets de incio de cada partición
-      aOffsetsDeInicio=()
-      # Comprobar si el paquete fdisk está instalado. Si no lo está, instalarlo.
-        if [[ $(dpkg-query -s fdisk 2>/dev/null | grep installed) == "" ]]; then
-          echo ""
-          echo -e "${cColorRojo}  El paquete fdisk no está instalado. Iniciando su instalación...${cFinColor}"
-          echo ""
-          sudo apt-get -y update
-          sudo apt-get -y install fdisk
-          echo ""
-        fi
-      for vOffset in $(sudo fdisk -l -o Device,Start "$vRecoveryFilePath" | grep ^/ | rev | cut -d' ' -f1 | rev); do
-        aOffsetsDeInicio+=("$vOffset")
-      done
-
-    # Multiplicar el valor de cada campo del array x el tamaño de bloque
-      for vNroOffsetSimple in "${aOffsetsDeInicio[@]}"; do
-        echo "  Multiplicando por $vBytesPerSector el offset $vNroOffsetSimple"
-        vOffsetMultiplicado=$((vNroOffsetSimple * $vBytesPerSector))
-        aNuevosOffsets+=("$vOffsetMultiplicado")
-      done
-      echo ""
-
-    # Crear la carpeta del Recovery y montar las particiones como sólo lectura
-      # Comprobar si el paquete util-linux está instalado. Si no lo está, instalarlo.
-        if [[ $(dpkg-query -s util-linux 2>/dev/null | grep installed) == "" ]]; then
-          echo ""
-          echo -e "${cColorRojo}  El paquete util-linux no está instalado. Iniciando su instalación...${cFinColor}"
-          echo ""
-          sudo apt-get -y update
-          sudo apt-get -y install util-linux
-          echo ""
-        fi
-      for vIndice in "${!aNuevosOffsets[@]}"; do
-        vNroConCeros=$(printf "%02d" $((vIndice + 1)))
-        sudo mkdir -p "/ChromeOSRecovery/Particiones/$vNroConCeros"
-        vDispositivoLoopLibre=$(sudo losetup -f)
-        sudo losetup -f -o "${aNuevosOffsets[vIndice]}" "$vRecoveryFilePath" && \
-        echo -e "\n  Partición del offset ${aNuevosOffsets[vIndice]} asignada a $vDispositivoLoopLibre."
-        sudo mount -o ro "$vDispositivoLoopLibre" "/ChromeOSRecovery/Particiones/$vNroConCeros" && \
-        echo -e "\n    $vDispositivoLoopLibre montado en /ChromeOSRecovery/Particiones/$vNroConCeros.\n"
-      done
-      echo ""
-
 # Get the EFI Partition folder
-  for vIndice in "${!aNuevosOffsets[@]}"; do
+  for vIndice in $(seq -w 1 99); do
     vNroConCeros=$(printf "%02d" $((vIndice + 1)))
     if [[ -d "/ChromeOSRecovery/Particiones/$vNroConCeros/efi" && -d "/ChromeOSRecovery/Particiones/$vNroConCeros/syslinux" ]]; then
       vEFIPartitionFolder="/ChromeOSRecovery/Particiones/$vNroConCeros/"
@@ -93,7 +34,7 @@
   echo ""
 
 # Get the root Partition folder
-  for vIndice in "${!aNuevosOffsets[@]}"; do
+  for vIndice in $(seq -w 1 99); do
     vNroConCeros=$(printf "%02d" $((vIndice + 1)))
     if [[ -d "/ChromeOSRecovery/Particiones/$vNroConCeros/home" && -d "/ChromeOSRecovery/Particiones/$vNroConCeros/root" ]]; then
       vRootPartitionFolder="/ChromeOSRecovery/Particiones/$vNroConCeros/"
@@ -105,5 +46,3 @@
   echo "    $vRootPartitionFolder"
   echo ""
 
-# Delete empty folders
-  #find "/ChromeOSRecovery/Particiones/" -type d -empty -delete
