@@ -81,3 +81,7 @@
         echo -e "\n    $vDispositivoLoopLibre montado en /ChromeOSRecovery/$cFechaDelRecovery/Particiones/$vNroConCeros.\n"
       done
       echo ""
+
+# Delete empty folders
+  #find "/ChromeOSRecovery/$cFechaDelRecovery/Particiones/" -type d -empty -delete
+  
