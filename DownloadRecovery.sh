@@ -20,6 +20,9 @@
 # Set the -zip file URL
   vFileURL="https://dl.google.com/chromeos-flex/images/latest.bin.zip"
 
+# Get the name of the downloads folder
+  vDownloadFolderPath=$(xdg-user-dir DOWNLOAD)
+
 # Downlaod
   echo ""
   echo "  Downloading .zip file..."
@@ -34,5 +37,22 @@
       echo ""
     fi
   cd /tmp
-  curl -L $vFileURL -o /tmp/chromeos-flex.zip --progress-bar
+  curl -L $vFileURL -o $vDownloadFolderPath/chromeos-flex.zip --progress-bar
 
+# Extract
+  echo ""
+  echo "  Extracting .bin file from .zip..."
+  echo ""
+  # Check if unzip package is installed. If not, install ir.
+    if [[ $(dpkg-query -s unzip 2>/dev/null | grep installed) == "" ]]; then
+      echo ""
+      echo -e "${cColorRojo}  The unzip package is not installed. Starting its installation...${cFinColor}"
+      echo ""
+      sudo apt-get -y update
+      sudo apt-get -y install unzip
+      echo ""
+    fi
+  mkdir /tmp/ChromeOSFlex/ 2> /dev/null
+  unzip -o $vDownloadFolderPath/chromeos-flex.zip -d $vDownloadFolderPath/ && rm -vf $vDownloadFolderPath/chromeos-flex.zip
+  # Rebane .bin file
+    find $vDownloadFolderPath/ -name chromeos*.bin -type f -exec mv -vf {} $vDownloadFolderPath/chromeos-flex-latest.bin \;
