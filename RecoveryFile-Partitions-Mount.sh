@@ -82,6 +82,31 @@
       done
       echo ""
 
+# Get the EFI Partition folder
+  for vIndice in "${!aNuevosOffsets[@]}"; do
+    vNroConCeros=$(printf "%02d" $((vIndice + 1)))
+    if [[ -d "/ChromeOSRecovery/$cFechaDelRecovery/Particiones/$vNroConCeros/efi" && -d "/ChromeOSRecovery/$cFechaDelRecovery/Particiones/$vNroConCeros/syslinux" ]]; then
+      vEFIPartitionFolder="/ChromeOSRecovery/$cFechaDelRecovery/Particiones/$vNroConCeros/"
+    fi
+  done
+  echo ""
+  echo "  ChromeOSFlex root partition folder mounted in:"
+  echo ""
+  echo "    $vEFIPartitionFolder"
+  echo ""
+
+# Get the root Partition folder
+  for vIndice in "${!aNuevosOffsets[@]}"; do
+    vNroConCeros=$(printf "%02d" $((vIndice + 1)))
+    if [[ -d "/ChromeOSRecovery/$cFechaDelRecovery/Particiones/$vNroConCeros/home" && -d "/ChromeOSRecovery/$cFechaDelRecovery/Particiones/$vNroConCeros/root" ]]; then
+      vRootPartitionFolder="/ChromeOSRecovery/$cFechaDelRecovery/Particiones/$vNroConCeros/"
+    fi
+  done
+  echo ""
+  echo "  ChromeOSFlex root partition folder mounted in:"
+  echo ""
+  echo "    $vRootPartitionFolder"
+  echo ""
+
 # Delete empty folders
   #find "/ChromeOSRecovery/$cFechaDelRecovery/Particiones/" -type d -empty -delete
-  
