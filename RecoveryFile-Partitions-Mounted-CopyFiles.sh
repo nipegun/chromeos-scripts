@@ -20,24 +20,29 @@
 # Get the name of the downloads folder
   vDownloadFolderPath=$(xdg-user-dir DOWNLOAD)
 
+# Set the .bin mounted partitions folder
+  vChromeOSFlexPartitionsFolder="/ChromeOSFlexRecovery/Particiones" # Do not add final /
+
 # Get the EFI Partition folder
-  for vIndice in $(seq -w 1 99); do
+  for vIndice in $(seq -w 01 99); do
     vNroConCeros=$(printf "%02d" $((vIndice + 1)))
-    if [[ -d "/ChromeOSRecovery/Particiones/$vNroConCeros/efi" && -d "/ChromeOSRecovery/Particiones/$vNroConCeros/syslinux" ]]; then
-      vEFIPartitionFolder="/ChromeOSRecovery/Particiones/$vNroConCeros/"
+    if [[ -d "$vChromeOSFlexPartitionsFolder/$vNroConCeros/efi" && -d "$vChromeOSFlexPartitionsFolder/$vNroConCeros/syslinux" ]]; then
+      vEFIPartitionFolder="$vChromeOSFlexPartitionsFolder/$vNroConCeros/"
+      break
     fi
   done
   echo ""
-  echo "  ChromeOSFlex root partition folder mounted in:"
+  echo "  ChromeOSFlex EFI partition folder mounted in:"
   echo ""
   echo "    $vEFIPartitionFolder"
   echo ""
 
 # Get the root Partition folder
-  for vIndice in $(seq -w 1 99); do
+  for vIndice in $(seq -w 01 99); do
     vNroConCeros=$(printf "%02d" $((vIndice + 1)))
-    if [[ -d "/ChromeOSRecovery/Particiones/$vNroConCeros/home" && -d "/ChromeOSRecovery/Particiones/$vNroConCeros/root" ]]; then
-      vRootPartitionFolder="/ChromeOSRecovery/Particiones/$vNroConCeros/"
+    if [[ -d "$vChromeOSFlexPartitionsFolder/$vNroConCeros/home" && -d "$vChromeOSFlexPartitionsFolder/$vNroConCeros/root" ]]; then
+      vRootPartitionFolder="$vChromeOSFlexPartitionsFolder/$vNroConCeros/"
+      break
     fi
   done
   echo ""
@@ -46,3 +51,12 @@
   echo "    $vRootPartitionFolder"
   echo ""
 
+# Copy files
+  # Remove previous files
+    sudo rm -rf /ChromeOSFlexHD/
+  # efi
+    sudo mkdir -p /ChromeOSFlexHD/fat32/
+    sudo cp -a "$vEFIPartitionFolder". /ChromeOSFlexHD/fat32/
+  # ext4
+    sudo mkdir -p /ChromeOSFlexHD/ext4/
+    sudo cp -a "$vRootPartitionFolder". /ChromeOSFlexHD/ext4/
