@@ -107,3 +107,4 @@
 
 # Delete empty folders
   #find "/ChromeOSFlexRecovery/Partitions/" -type d -empty -delete
+
