@@ -87,7 +87,7 @@
     fi
   done
   echo ""
-  echo "  ChromeOSFlex root partition folder mounted in:"
+  echo "  ChromeOSFlex EFI partition folder mounted in:"
   echo ""
   echo "    $vEFIPartitionFolder"
   echo ""
