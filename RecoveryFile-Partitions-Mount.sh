@@ -81,5 +81,3 @@
         echo -e "\n    $vDispositivoLoopLibre montado en /Recoverys/$cFechaDelRecovery/Imagen/Particiones/$vNroConCeros.\n"
       done
       echo ""
-
-  fi
