@@ -9,13 +9,13 @@
 # NiPeGun's script to download the ChromeOS ZIP recovery file
 #
 # Remote execution (may require sudo privileges):
-#   curl -sL https://raw.githubusercontent.com/nipegun/chromeos-scripts/refs/heads/main/DownloadRecoveryFile.sh | bash
+#   curl -sL https://raw.githubusercontent.com/nipegun/chromeos-scripts/refs/heads/main/RecoveryFile-Download.sh | bash
 #
 # Remote execution as root (for systems without sudo):
-#   curl -sL https://raw.githubusercontent.com/nipegun/chromeos-scripts/refs/heads/main/DownloadRecoveryFile.sh | sed 's-sudo--g' | bash
+#   curl -sL https://raw.githubusercontent.com/nipegun/chromeos-scripts/refs/heads/main/RecoveryFile-Dowload.sh | sed 's-sudo--g' | bash
 #
 # Download and edit the file directly in nano:
-#   curl -sL https://raw.githubusercontent.com/nipegun/chromeos-scripts/refs/heads/main/DownloadRecoveryFile.sh | nano -
+#   curl -sL https://raw.githubusercontent.com/nipegun/chromeos-scripts/refs/heads/main/RecoveryFile-Download.sh | nano -
 
 # Set the -zip file URL
   vFileURL="https://dl.google.com/chromeos-flex/images/latest.bin.zip"
