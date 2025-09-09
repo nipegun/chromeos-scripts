@@ -21,7 +21,7 @@
   vDownloadFolderPath=$(xdg-user-dir DOWNLOAD)
 
 # Set the .bin mounted partitions folder
-  vChromeOSFlexPartitionsFolder="/ChromeOSFlexRecovery/Particiones" # Do not add final /
+  vChromeOSFlexPartitionsFolder="/ChromeOSFlexRecovery/Partitions" # Do not add final /
 
 # Get the EFI Partition folder
   for vIndice in $(seq -w 01 99); do
