@@ -60,3 +60,4 @@
   # ext4
     sudo mkdir -p /ChromeOSFlexHD/ext4/
     sudo cp -a "$vRootPartitionFolder". /ChromeOSFlexHD/ext4/
+
