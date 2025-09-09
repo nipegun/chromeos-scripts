@@ -9,16 +9,11 @@
 # NiPeGun's script to create an iso file from the ChromeOS .bon file
 #
 # Remote execution (may require sudo privileges):
-#   curl -sL x | bash
+#   curl -sL https://raw.githubusercontent.com/nipegun/chromeos-scripts/refs/heads/main/CreateISOFromBIN.sh | bash
 #
 # Remote execution as root (for systems without sudo):
-#   curl -sL x | sed 's-sudo--g' | bash
-#
-# Remote execution without cache:
-#   curl -sL -H 'Cache-Control: no-cache, no-store' x | bash
-#
-# Remote execution with parameters:
-#   curl -sL x | bash -s Parámetro1 Parámetro2
+#   curl -sL https://raw.githubusercontent.com/nipegun/chromeos-scripts/refs/heads/main/CreateISOFromBIN.sh | sed 's-sudo--g' | bash
 #
 # Download and edit the file directly in nano:
-#   curl -sL x | nano -
+#   curl -sL https://raw.githubusercontent.com/nipegun/chromeos-scripts/refs/heads/main/CreateISOFromBIN.sh | nano -
+
