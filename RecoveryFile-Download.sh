@@ -56,3 +56,4 @@
   unzip -o $vDownloadFolderPath/chromeos-flex.zip -d $vDownloadFolderPath/ && rm -vf $vDownloadFolderPath/chromeos-flex.zip
   # Rebane .bin file
     find $vDownloadFolderPath/ -name chromeos*.bin -type f -exec mv -vf {} $vDownloadFolderPath/chromeos-flex-latest.bin \;
+
