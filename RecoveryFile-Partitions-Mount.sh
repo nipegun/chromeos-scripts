@@ -73,11 +73,11 @@
         fi
       for vIndice in "${!aNuevosOffsets[@]}"; do
         vNroConCeros=$(printf "%02d" $((vIndice + 1)))
-        sudo mkdir -p "/Recoverys/$cFechaDelRecovery/Imagen/Particiones/$vNroConCeros"
+        sudo mkdir -p "/ChromeOSRecovery/$cFechaDelRecovery/Particiones/$vNroConCeros"
         vDispositivoLoopLibre=$(sudo losetup -f)
         sudo losetup -f -o "${aNuevosOffsets[vIndice]}" "$vRecoveryFilePath" && \
         echo -e "\n  Partición del offset ${aNuevosOffsets[vIndice]} asignada a $vDispositivoLoopLibre."
-        sudo mount -o ro "$vDispositivoLoopLibre" "/Recoverys/$cFechaDelRecovery/Imagen/Particiones/$vNroConCeros" && \
-        echo -e "\n    $vDispositivoLoopLibre montado en /Recoverys/$cFechaDelRecovery/Imagen/Particiones/$vNroConCeros.\n"
+        sudo mount -o ro "$vDispositivoLoopLibre" "/ChromeOSRecovery/$cFechaDelRecovery/Particiones/$vNroConCeros" && \
+        echo -e "\n    $vDispositivoLoopLibre montado en /ChromeOSRecovery/$cFechaDelRecovery/Particiones/$vNroConCeros.\n"
       done
       echo ""
