@@ -28,7 +28,7 @@
   cColorLightBlue='\033[1;34m'
   cColorGreen='\033[1;32m'
   cColorRed='\033[1;31m'
-  cEndColor='\033[0m'
+  cColoEnd='\033[0m'
 
 # Notificar inicio de ejecución del script
   echo ""
@@ -50,7 +50,7 @@
     fi
   cd /tmp
   sudo rm -f $vDownloadFolderPath/chromeos-flex.zip 2> /dev/null
-  curl -L $vFileURL -o $vDownloadFolderPath/chromeos-flex.zip --progress-bar
+  curl -L $vFileURL -o $vDownloadFolderPath/chromeos-flex-latest.zip --progress-bar
 
 # Extract
   echo ""
@@ -66,7 +66,7 @@
       echo ""
     fi
   mkdir /tmp/ChromeOSFlex/ 2> /dev/null
-  unzip -o $vDownloadFolderPath/chromeos-flex.zip -d $vDownloadFolderPath/ && rm -vf $vDownloadFolderPath/chromeos-flex.zip
+  unzip -o $vDownloadFolderPath/chromeos-flex-latest.zip -d $vDownloadFolderPath/ && rm -f $vDownloadFolderPath/chromeos-flex-latest.zip
   # Rebane .bin file
     sudo rm -f $vDownloadFolderPath/chromeos-flex-latest.bin 2> /dev/null
     find $vDownloadFolderPath/ -name chromeos*.bin -type f -exec mv -vf {} $vDownloadFolderPath/chromeos-flex-latest.bin \;
