@@ -32,7 +32,7 @@
 
 # Notificar inicio de ejecución del script
   echo ""
-  echo -e "${cColorAzulClaro}  Starting the ChromeOSFlex recovery download script...${cEndColor}"
+  echo -e "${cColorLightBlue}  Starting the ChromeOSFlex recovery download script...${cColorEnd}"
   echo ""
 
 # Downlaod
@@ -42,13 +42,14 @@
   # Check if curl package is installed. If not, install ir.
     if [[ $(dpkg-query -s curl 2>/dev/null | grep installed) == "" ]]; then
       echo ""
-      echo -e "${cColorRojo}  The curl package is not installed. Starting its installation...${cEndColor}"
+      echo -e "${cColorRed}  The curl package is not installed. Starting its installation...${cColorEnd}"
       echo ""
       sudo apt-get -y update
       sudo apt-get -y install curl
       echo ""
     fi
   cd /tmp
+  sudo rm -f $vDownloadFolderPath/chromeos-flex.zip 2> /dev/null
   curl -L $vFileURL -o $vDownloadFolderPath/chromeos-flex.zip --progress-bar
 
 # Extract
@@ -58,7 +59,7 @@
   # Check if unzip package is installed. If not, install ir.
     if [[ $(dpkg-query -s unzip 2>/dev/null | grep installed) == "" ]]; then
       echo ""
-      echo -e "${cColorRojo}  The unzip package is not installed. Starting its installation...${cFinColor}"
+      echo -e "${cColorRed}  The unzip package is not installed. Starting its installation...${cColorEnd}"
       echo ""
       sudo apt-get -y update
       sudo apt-get -y install unzip
@@ -67,5 +68,7 @@
   mkdir /tmp/ChromeOSFlex/ 2> /dev/null
   unzip -o $vDownloadFolderPath/chromeos-flex.zip -d $vDownloadFolderPath/ && rm -vf $vDownloadFolderPath/chromeos-flex.zip
   # Rebane .bin file
+    sudo rm -f $vDownloadFolderPath/chromeos-flex-latest.bin 2> /dev/null
     find $vDownloadFolderPath/ -name chromeos*.bin -type f -exec mv -vf {} $vDownloadFolderPath/chromeos-flex-latest.bin \;
+  echo ""
 
