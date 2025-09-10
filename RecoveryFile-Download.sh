@@ -12,7 +12,7 @@
 #   curl -sL https://raw.githubusercontent.com/nipegun/chromeos-scripts/refs/heads/main/RecoveryFile-Download.sh | bash
 #
 # Remote execution as root (for systems without sudo):
-#   curl -sL https://raw.githubusercontent.com/nipegun/chromeos-scripts/refs/heads/main/RecoveryFile-Dowload.sh | sed 's-sudo--g' | bash
+#   curl -sL https://raw.githubusercontent.com/nipegun/chromeos-scripts/refs/heads/main/RecoveryFile-Download.sh | sed 's-sudo--g' | bash
 #
 # Download and edit the file directly in nano:
 #   curl -sL https://raw.githubusercontent.com/nipegun/chromeos-scripts/refs/heads/main/RecoveryFile-Download.sh | nano -
@@ -23,14 +23,26 @@
 # Get the name of the downloads folder
   vDownloadFolderPath=$(xdg-user-dir DOWNLOAD)
 
+# Set the color constants
+  cColorBlue='\033[0;34m'
+  cColorLightBlue='\033[1;34m'
+  cColorGreen='\033[1;32m'
+  cColorRed='\033[1;31m'
+  cEndColor='\033[0m'
+
+# Notificar inicio de ejecución del script
+  echo ""
+  echo -e "${cColorAzulClaro}  Starting the ChromeOSFlex recovery download script...${cEndColor}"
+  echo ""
+
 # Downlaod
   echo ""
-  echo "  Downloading .zip file..."
+  echo "    Downloading .zip file..."
   echo ""
   # Check if curl package is installed. If not, install ir.
     if [[ $(dpkg-query -s curl 2>/dev/null | grep installed) == "" ]]; then
       echo ""
-      echo -e "${cColorRojo}  The curl package is not installed. Starting its installation...${cFinColor}"
+      echo -e "${cColorRojo}  The curl package is not installed. Starting its installation...${cEndColor}"
       echo ""
       sudo apt-get -y update
       sudo apt-get -y install curl
@@ -41,7 +53,7 @@
 
 # Extract
   echo ""
-  echo "  Extracting .bin file from .zip..."
+  echo "    Extracting .bin file from .zip..."
   echo ""
   # Check if unzip package is installed. If not, install ir.
     if [[ $(dpkg-query -s unzip 2>/dev/null | grep installed) == "" ]]; then
